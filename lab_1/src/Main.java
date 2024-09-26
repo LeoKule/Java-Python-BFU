@@ -3,11 +3,14 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
             System.out.println("Выберите задание:");
             System.out.println("1. Сиракузская последовательность");
             System.out.println("2. Знакочередующаяся сумма ряда");
             System.out.println("3. Ищем клад");
+            System.out.println("4. Логистический максимин");
+            System.out.println("5. Дважды четное число");
             System.out.println("0. Выход");
             int choice = scanner.nextInt();
 
@@ -20,6 +23,12 @@ public class Main {
                     break;
                 case 3:
                     treasureHunt(scanner);
+                    break;
+                case 4:
+                    logisticMaximin(scanner);
+                    break;
+                case 5:
+                    twiceEvenNumber(scanner);
                     break;
                 case 0:
                     System.out.println("Выход из программы...");
@@ -55,13 +64,11 @@ public class Main {
         int n = scanner.nextInt();
         int sum = 0;
 
-        for (int i = 1; i <= n; i++) {
-            System.out.print("Введите число " + i + ": ");
-            int num = scanner.nextInt();
-            if (i % 2 != 0) {
-                sum += num;
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) {
+                sum += scanner.nextInt();;
             } else {
-                sum -= num;
+                sum -= scanner.nextInt();
             }
         }
 
@@ -113,5 +120,60 @@ public class Main {
         }
 
         System.out.println("Минимальное количество указаний карты: " + steps);
+    }
+
+    // Задание 4: Логистический максимин
+    public static void logisticMaximin(Scanner scanner) {
+        System.out.print("Введите количество дорог: ");
+        int numRoads = scanner.nextInt();
+        int bestRoad = -1;    // Номер лучшей дороги
+        int maxMinHeight = -1; // Максимальная из минимальных высот
+
+        for (int i = 1; i <= numRoads; i++) {
+            System.out.print("Введите количество туннелей на дороге " + i + ": ");
+            int numTunnels = scanner.nextInt();
+
+            int minHeight = Integer.MAX_VALUE;
+
+            System.out.println("Введите высоты туннелей для дороги " + i + ":");
+            for (int j = 0; j < numTunnels; j++) {
+                int height = scanner.nextInt();
+                if (height < minHeight) {
+                    minHeight = height;
+                }
+            }
+
+            if (minHeight > maxMinHeight) {
+                maxMinHeight = minHeight;
+                bestRoad = i;
+            }
+        }
+
+        System.out.println("Номер дороги: " + bestRoad);
+        System.out.println("Максимальная высота грузовика: " + maxMinHeight + " см");
+    }
+
+    // Задание 5: Дважды четное число
+    public static void twiceEvenNumber(Scanner scanner) {
+        System.out.print("Введите трёхзначное число: ");
+        int number = scanner.nextInt();
+
+        if (number < 100 || number > 999) {
+            System.out.println("Ошибка: введено не трёхзначное число.");
+            return;
+        }
+
+        int digit1 = number / 100;
+        int digit2 = (number / 10) % 10;
+        int digit3 = number % 10;
+
+        int sum = digit1 + digit2 + digit3;
+        int product = digit1 * digit2 * digit3;
+
+        if (sum % 2 == 0 && product % 2 == 0) {
+            System.out.println("Число является дважды четным.");
+        } else {
+            System.out.println("Число не является дважды четным.");
+        }
     }
 }
